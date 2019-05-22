@@ -80,8 +80,13 @@ export interface ISupplyChain extends ITruffleContract {
 /**
  * RBAC contract interface definition
  */
+export interface IRole {
+    description: string;
+    admin: BigNumber;
+    bearers: string[];
+}
 export interface IRBAC extends ITruffleContract {
-    roles: (roleId: BigNumber) => Promise<{ description: string, admin: BigNumber, bearers: string[] }>;
+    roles: (roleId: BigNumber) => Promise<IRole>;
     addRootRole: (roleDescription: string, options: object) => Promise<BigNumber>;
     addRole: (roleDescription: string, admin: BigNumber, options: object) => Promise<BigNumber>;
     totalRoles: () => Promise<BigNumber>;
