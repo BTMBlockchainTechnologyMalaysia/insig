@@ -22,7 +22,7 @@ export interface ISupplyChainState {
     operatorRole: BigNumber;
     ownerRole: BigNumber;
     partOf: BigNumber;
-};
+}
 export interface ISupplyChain extends ITruffleContract {
     totalAssets: () => Promise<BigNumber>;
     lastStates: (state: BigNumber) => Promise<BigNumber>;
