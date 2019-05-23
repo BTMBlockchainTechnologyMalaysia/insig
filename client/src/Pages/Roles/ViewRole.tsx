@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import React, { Component } from 'react';
-import { IRBAC, IRole } from '../../Common/CommonInterfaces';
+import { ISupplyChain, IRole } from '../../Common/CommonInterfaces';
 
 
 // dom controller names
@@ -21,7 +21,7 @@ interface IViewRoleState {
 }
 // Component props
 interface IViewRoleProps {
-    rbac: IRBAC;
+    supplyChain: ISupplyChain;
     userAccount: string;
 }
 class ViewRole extends Component<IViewRoleProps, IViewRoleState> {
@@ -50,15 +50,15 @@ class ViewRole extends Component<IViewRoleProps, IViewRoleState> {
     }
 
     public handleSubmit = (event: any) => {
-        const { rbac, userAccount } = this.props;
+        const { supplyChain, userAccount } = this.props;
         const { hasRoleAddress, hasRoleId, viewRoleId } = this.state;
         // TODO: add input
         if (event.target.name === DOMNames.viewRoleForm) {
-            rbac.roles(new BigNumber(viewRoleId)).then((role) => {
+            supplyChain.roles(new BigNumber(viewRoleId)).then((role) => {
                 this.setState({ role });
             });
         } else {
-            rbac.hasRole(hasRoleAddress, new BigNumber(hasRoleId)).then((has) => {
+            supplyChain.hasRole(hasRoleAddress, new BigNumber(hasRoleId)).then((has) => {
                 this.setState({ hasRole: has });
             });
         }

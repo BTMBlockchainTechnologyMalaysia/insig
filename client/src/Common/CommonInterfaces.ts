@@ -12,6 +12,15 @@ export interface IBlockchainState {
 interface ITruffleContract {
     deployed: () => Promise<any>;
 }
+
+/**
+ * RBAC contract interface definition
+ */
+export interface IRole {
+    description: string;
+    admin: BigNumber;
+    bearers: string[];
+}
 /**
  * SupplyChain contract interface definition
  */
@@ -75,17 +84,7 @@ export interface ISupplyChain extends ITruffleContract {
         partOf: BigNumber,
         options: object,
     ) => Promise<void>;
-}
-
-/**
- * RBAC contract interface definition
- */
-export interface IRole {
-    description: string;
-    admin: BigNumber;
-    bearers: string[];
-}
-export interface IRBAC extends ITruffleContract {
+    // rbac related
     roles: (roleId: BigNumber) => Promise<IRole>;
     addRootRole: (roleDescription: string, options: object) => Promise<BigNumber>;
     addRole: (roleDescription: string, admin: BigNumber, options: object) => Promise<BigNumber>;

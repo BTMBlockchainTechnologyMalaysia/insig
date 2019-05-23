@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import React, { Component } from 'react';
-import { IRBAC } from '../../Common/CommonInterfaces';
+import { ISupplyChain } from '../../Common/CommonInterfaces';
 
 
 // dom controller names
@@ -14,7 +14,7 @@ interface INewRootRoleState {
 }
 // Component props
 interface INewRootRoleProps {
-    rbac: IRBAC;
+    supplyChain: ISupplyChain;
     userAccount: string;
 }
 class NewRootRole extends Component<INewRootRoleProps, INewRootRoleState> {
@@ -35,9 +35,9 @@ class NewRootRole extends Component<INewRootRoleProps, INewRootRoleState> {
     }
 
     public handleSubmit = (event: any) => {
-        const { rbac, userAccount } = this.props;
+        const { supplyChain, userAccount } = this.props;
         const { rootRoleTile } = this.state;
-        rbac.addRootRole(rootRoleTile, { from: userAccount }).then(() => {
+        supplyChain.addRootRole(rootRoleTile, { from: userAccount }).then(() => {
             // refresh page
         });
         event.preventDefault();

@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import React, { Component } from 'react';
-import { IRBAC } from '../../Common/CommonInterfaces';
+import { ISupplyChain } from '../../Common/CommonInterfaces';
 
 
 // dom controller names
@@ -14,7 +14,7 @@ interface IRemoveBearerState {
 }
 // Component props
 interface IRemoveBearerProps {
-    rbac: IRBAC;
+    supplyChain: ISupplyChain;
     userAccount: string;
 }
 class RemoveBearer extends Component<IRemoveBearerProps, IRemoveBearerState> {
@@ -35,10 +35,10 @@ class RemoveBearer extends Component<IRemoveBearerProps, IRemoveBearerState> {
     }
 
     public handleSubmit = (event: any) => {
-        const { rbac, userAccount } = this.props;
+        const { supplyChain, userAccount } = this.props;
         const { removeBearerAddress } = this.state;
         // TODO: add input
-        rbac.removeBearer(removeBearerAddress, new BigNumber(1), { from: userAccount });
+        supplyChain.removeBearer(removeBearerAddress, new BigNumber(1), { from: userAccount });
         event.preventDefault();
     }
 

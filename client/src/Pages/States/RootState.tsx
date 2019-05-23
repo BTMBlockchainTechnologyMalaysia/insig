@@ -23,6 +23,7 @@ interface IRootProps {
     supplyChain: ISupplyChain;
     listActions: Array<{ description: string, index: number }>;
     rolesList: Array<{ description: string, index: number }>;
+    web3: any;
 }
 class RootState extends Component<IRootProps, IRootState> {
     /**
@@ -61,7 +62,7 @@ class RootState extends Component<IRootProps, IRootState> {
      * Handle any submit button
      */
     public handleSubmit = (event: any) => {
-        const { supplyChain, userAccount } = this.props;
+        const { supplyChain, userAccount, web3 } = this.props;
         const {
             rootStateAction,
             rootStateOperatorRole,

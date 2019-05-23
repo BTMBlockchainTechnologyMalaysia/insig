@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import React, { Component } from 'react';
-import { IRBAC } from '../../Common/CommonInterfaces';
+import { ISupplyChain } from '../../Common/CommonInterfaces';
 
 
 // dom controller names
@@ -16,7 +16,7 @@ interface IAddBearerState {
 }
 // Component props
 interface IAddBearerProps {
-    rbac: IRBAC;
+    supplyChain: ISupplyChain;
     userAccount: string;
     rolesList: Array<{ description: string, index: number }>;
 }
@@ -41,9 +41,9 @@ class AddBearer extends Component<IAddBearerProps, IAddBearerState> {
     }
 
     public handleSubmit = (event: any) => {
-        const { rbac, userAccount } = this.props;
+        const { supplyChain, userAccount } = this.props;
         const { addBearerAddress, bearerRole } = this.state;
-        rbac.addBearer(addBearerAddress, new BigNumber(bearerRole), { from: userAccount });
+        supplyChain.addBearer(addBearerAddress, new BigNumber(bearerRole), { from: userAccount });
         event.preventDefault();
     }
 

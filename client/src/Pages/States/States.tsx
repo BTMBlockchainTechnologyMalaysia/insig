@@ -4,7 +4,7 @@ import { Hint, Sankey } from 'react-vis';
 import Energy from './energy.json';
 
 import BlockchainGeneric from '../../Common/BlockchainGeneric';
-import { IBlockchainState, IRBAC, ISupplyChain } from '../../Common/CommonInterfaces';
+import { IBlockchainState, ISupplyChain } from '../../Common/CommonInterfaces';
 import '../../main.scss';
 import './states.scss';
 
@@ -33,7 +33,6 @@ interface IState extends IBlockchainState {
     supplyChain: ISupplyChain;
     currentTab: string;
     rolesList: Array<{ description: string, index: number }>;
-    rbac: IRBAC;
     nodes: any[];
     links: any[];
 }
@@ -46,7 +45,6 @@ class State extends Component<{}, IState> {
             links: [],
             listActions: [],
             nodes: [],
-            rbac: undefined as any,
             rolesList: [],
             supplyChain: undefined as any,
             userAccount: undefined as any,
@@ -66,12 +64,8 @@ class State extends Component<{}, IState> {
                     web3: generic.web3,
                 });
                 this.loadActions().then((actionsName) => this.setState({ listActions: actionsName }));
+                this.loadRoles();
                 this.loadGraphicData();
-            });
-            BlockchainGeneric.loadRBAC(generic.web3).then(async (contracts) => {
-                this.setState({
-                    rbac: contracts.rbac,
-                }, this.loadRoles);
             });
         });
     }
@@ -130,6 +124,7 @@ class State extends Component<{}, IState> {
             rolesList,
             supplyChain,
             userAccount,
+            web3,
         } = this.state;
 
         return (
@@ -140,6 +135,7 @@ class State extends Component<{}, IState> {
                         supplyChain={supplyChain}
                         listActions={listActions}
                         rolesList={rolesList}
+                        web3={web3}
                     />
                 </div>
                 <div className="tabContent" hidden={currentTab !== DOMNames.infoStateForm}>
@@ -283,14 +279,14 @@ class State extends Component<{}, IState> {
      * load all existing roles
      */
     private loadRoles = async () => {
-        const { rbac } = this.state;
-        if (rbac === undefined) {
+        const { supplyChain } = this.state;
+        if (supplyChain === undefined) {
             return [];
         }
-        const totalRoles = await rbac.totalRoles();
+        const totalRoles = await supplyChain.totalRoles();
         const roles: Array<{ description: string, index: number }> = [];
         for (let r = 1; r <= totalRoles.toNumber(); r += 1) {
-            roles.push({ description: (await rbac.roles(new BigNumber(r))).description, index: r });
+            roles.push({ description: (await supplyChain.roles(new BigNumber(r))).description, index: r });
         }
         this.setState({ rolesList: roles });
     }

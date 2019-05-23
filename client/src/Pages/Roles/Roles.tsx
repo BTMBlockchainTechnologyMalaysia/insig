@@ -7,7 +7,7 @@ import './roles.scss';
 import Navbar from '../../Components/Navbar/Navbar';
 
 import BlockchainGeneric from '../../Common/BlockchainGeneric';
-import { IBlockchainState, IRBAC } from '../../Common/CommonInterfaces';
+import { IBlockchainState, ISupplyChain } from '../../Common/CommonInterfaces';
 
 import AddBearer from './AddBearer';
 import ListRoles from './ListRoles';
@@ -28,7 +28,7 @@ enum DOMNames {
  * Roles class states
  */
 interface IRolesState extends IBlockchainState {
-    rbac: IRBAC;
+    supplyChain: ISupplyChain;
     rolesList: Array<{ description: string, index: number }>;
     currentTab: string;
 }
@@ -40,7 +40,7 @@ class Roles extends Component<{}, IRolesState> {
         super(props);
         this.state = {
             currentTab: '',
-            rbac: undefined as any,
+            supplyChain: undefined as any,
             rolesList: [],
             userAccount: '',
             web3: undefined as any,
@@ -52,9 +52,9 @@ class Roles extends Component<{}, IRolesState> {
      */
     public componentDidMount() {
         BlockchainGeneric.onLoad().then((generic) => {
-            BlockchainGeneric.loadRBAC(generic.web3).then(async (contracts) => {
+            BlockchainGeneric.loadSupplyChain(generic.web3).then(async (contracts) => {
                 this.setState({
-                    rbac: contracts.rbac,
+                    supplyChain: contracts.supplyChain,
                     userAccount: generic.userAccount,
                     web3: generic.web3,
                 }, this.loadRoles);
@@ -108,38 +108,38 @@ class Roles extends Component<{}, IRolesState> {
             currentTab,
             rolesList,
             userAccount,
-            rbac,
+            supplyChain,
         } = this.state;
         return (<div>
             <div className="tabContent" hidden={currentTab !== DOMNames.newRootRoleForm}>
                 <NewRootRole
                     userAccount={userAccount}
-                    rbac={rbac}
+                    supplyChain={supplyChain}
                 />
             </div>
             <div className="tabContent" hidden={currentTab !== DOMNames.newRoleForm}>
                 <NewRole
                     userAccount={userAccount}
-                    rbac={rbac}
+                    supplyChain={supplyChain}
                 />
             </div>
             <div className="tabContent" hidden={currentTab !== DOMNames.addBearerForm}>
                 <AddBearer
                     userAccount={userAccount}
-                    rbac={rbac}
+                    supplyChain={supplyChain}
                     rolesList={rolesList}
                 />
             </div>
             <div className="tabContent" hidden={currentTab !== DOMNames.removeBearerForm}>
                 <RemoveBearer
                     userAccount={userAccount}
-                    rbac={rbac}
+                    supplyChain={supplyChain}
                 />
             </div>
             <div className="tabContent" hidden={currentTab !== DOMNames.viewRoleForm}>
                 <ViewRole
                     userAccount={userAccount}
-                    rbac={rbac}
+                    supplyChain={supplyChain}
                 />
             </div>
             <div>
@@ -154,14 +154,14 @@ class Roles extends Component<{}, IRolesState> {
      * load all existing roles
      */
     private loadRoles = async () => {
-        const { rbac } = this.state;
-        if (rbac === undefined) {
+        const { supplyChain } = this.state;
+        if (supplyChain === undefined) {
             return [];
         }
-        const totalRoles = await rbac.totalRoles();
+        const totalRoles = await supplyChain.totalRoles();
         const roles: Array<{ description: string, index: number }> = [];
         for (let r = 1; r <= totalRoles.toNumber(); r += 1) {
-            roles.push({ description: (await rbac.roles(new BigNumber(r))).description, index: r });
+            roles.push({ description: (await supplyChain.roles(new BigNumber(r))).description, index: r });
         }
         this.setState({ rolesList: roles });
     }

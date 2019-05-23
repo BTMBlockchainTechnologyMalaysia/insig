@@ -3,7 +3,6 @@ import truffleContract from 'truffle-contract';
 import getWeb3 from '../utils/getWeb3';
 import {
     IBlockchainState,
-    IRBAC,
     ISupplyChain,
 } from './CommonInterfaces';
 
@@ -39,19 +38,6 @@ class BlockchainGeneric {
             (ContractSupplyChain as any).setProvider((web3 as any).currentProvider);
             const instanceSupplyChain = await ContractSupplyChain.deployed();
             resolve({ supplyChain: instanceSupplyChain });
-        });
-    }
-
-    /**
-     * load rbac contracts
-     */
-    public static loadRBAC(web3: any): Promise<{ rbac: IRBAC }> {
-        return new Promise(async (resolve, reject) => {
-            // load contract
-            const ContractRBAC = truffleContract(RBACJSON) as IRBAC;
-            (ContractRBAC as any).setProvider((web3 as any).currentProvider);
-            const instanceRBAC = await ContractRBAC.deployed();
-            resolve({ rbac: instanceRBAC });
         });
     }
 }
