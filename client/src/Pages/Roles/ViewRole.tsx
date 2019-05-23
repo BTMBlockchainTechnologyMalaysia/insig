@@ -7,10 +7,16 @@ import { IRBAC, IRole } from '../../Common/CommonInterfaces';
 enum DOMNames {
     viewRoleForm = 'viewRoleForm',
     viewRoleId = 'viewRoleId',
+    hasRoleForm = 'hasRoleForm',
+    hasRoleAddress = 'hasRoleAddress',
+    hasRoleId = 'hasRoleId',
 }
 // Component state
 interface IViewRoleState {
     viewRoleId: string;
+    hasRoleAddress: string;
+    hasRoleId: string;
+    hasRole: boolean;
     role: IRole;
 }
 // Component props
@@ -25,6 +31,9 @@ class ViewRole extends Component<IViewRoleProps, IViewRoleState> {
     constructor(props: any) {
         super(props);
         this.state = {
+            hasRole: undefined as any,
+            hasRoleAddress: '',
+            hasRoleId: '',
             role: undefined as any,
             viewRoleId: '',
         };
@@ -33,16 +42,26 @@ class ViewRole extends Component<IViewRoleProps, IViewRoleState> {
     public handleChange = (event: any) => {
         if (event.target.name === DOMNames.viewRoleId) {
             this.setState({ viewRoleId: event.target.value });
+        } else if (event.target.name === DOMNames.hasRoleAddress) {
+            this.setState({ hasRoleAddress: event.target.value, hasRole: undefined as any });
+        } else if (event.target.name === DOMNames.hasRoleId) {
+            this.setState({ hasRoleId: event.target.value, hasRole: undefined as any });
         }
     }
 
     public handleSubmit = (event: any) => {
         const { rbac, userAccount } = this.props;
-        const { viewRoleId } = this.state;
+        const { hasRoleAddress, hasRoleId, viewRoleId } = this.state;
         // TODO: add input
-        rbac.roles(new BigNumber(viewRoleId)).then((role) => {
-            this.setState({ role });
-        });
+        if (event.target.name === DOMNames.viewRoleForm) {
+            rbac.roles(new BigNumber(viewRoleId)).then((role) => {
+                this.setState({ role });
+            });
+        } else {
+            rbac.hasRole(hasRoleAddress, new BigNumber(hasRoleId)).then((has) => {
+                this.setState({ hasRole: has });
+            });
+        }
         event.preventDefault();
     }
 
@@ -50,8 +69,9 @@ class ViewRole extends Component<IViewRoleProps, IViewRoleState> {
      * @ignore
      */
     public render() {
-        const { viewRoleId, role } = this.state;
+        const { hasRole, hasRoleAddress, hasRoleId, viewRoleId, role } = this.state;
         let roleComp;
+        let userHasRole;
         if (role !== undefined) {
             roleComp = (
                 <div className="card">
@@ -74,10 +94,17 @@ class ViewRole extends Component<IViewRoleProps, IViewRoleState> {
                 </div>
             );
         }
+        if (hasRole !== undefined) {
+            if (hasRole === true) {
+                userHasRole = <p>User {hasRoleAddress} is a bearer of the role id {hasRoleId}</p>;
+            } else {
+                userHasRole = <p>User {hasRoleAddress} is <b>NOT</b> a bearer of the role id {hasRoleId}</p>;
+            }
+        }
         return (
             <div>
                 <form name={DOMNames.viewRoleForm} onSubmit={this.handleSubmit}>
-                    Remove Bearer
+                    View Role
                     <br />
                     <input
                         className="input"
@@ -91,6 +118,30 @@ class ViewRole extends Component<IViewRoleProps, IViewRoleState> {
                     <input type="submit" className="button is-primary" />
                 </form>
                 {roleComp}
+                <form name={DOMNames.hasRoleForm} onSubmit={this.handleSubmit}>
+                    Verify user has role
+                    <br />
+                    <input
+                        className="input"
+                        type="text"
+                        placeholder="user address"
+                        name={DOMNames.hasRoleAddress}
+                        value={hasRoleAddress}
+                        onChange={this.handleChange}
+                    />
+                    <br />
+                    <input
+                        className="input"
+                        type="text"
+                        placeholder="role id"
+                        name={DOMNames.hasRoleId}
+                        value={hasRoleId}
+                        onChange={this.handleChange}
+                    />
+                    <br />
+                    <input type="submit" className="button is-primary" />
+                </form>
+                {userHasRole}
             </div>
         );
     }

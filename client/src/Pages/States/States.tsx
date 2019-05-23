@@ -106,7 +106,7 @@ class State extends Component<{}, IState> {
                             <a>Handover state</a>
                         </li>
                         <li data-id={DOMNames.parteOfStateForm} onClick={this.handleChangeTab}>
-                            <a>Parte Of state</a>
+                            <a>Part Of state</a>
                         </li>
                         <li data-id={DOMNames.viewStateForm} onClick={this.handleChangeTab}>
                             <a>View state</a>

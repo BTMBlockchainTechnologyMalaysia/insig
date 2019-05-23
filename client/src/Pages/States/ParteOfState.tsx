@@ -113,7 +113,7 @@ class ParteOf extends Component<IParteOfProps, IParteOfState> {
                 <input
                     className="input"
                     type="text"
-                    placeholder="Parte of"
+                    placeholder="Part of"
                     name={DOMNames.parteOfStateParteOf}
                     value={parteOfStateParteOf}
                     onChange={this.handleChange}

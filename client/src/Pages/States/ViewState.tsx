@@ -80,7 +80,7 @@ class ViewState extends Component<IInfoProps, IViewState> {
                             <p><b>Creator</b> {state.creator}</p>
                             <p><b>Operator Role</b> {state.operatorRole.toNumber()}</p>
                             <p><b>Owner Role</b> {state.ownerRole.toNumber()}</p>
-                            <p><b>Parte Of</b> {state.partOf.toNumber()}</p>
+                            <p><b>Part Of</b> {state.partOf.toNumber()}</p>
                         </div>
                     </div>
                 </div>
