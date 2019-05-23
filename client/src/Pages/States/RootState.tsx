@@ -16,6 +16,7 @@ interface IRootState {
     rootStateAction: string;
     rootStateOperatorRole: string;
     rootStateOwnerRole: string;
+    modalMessage: string;
 }
 // Component props
 interface IRootProps {
@@ -32,6 +33,7 @@ class RootState extends Component<IRootProps, IRootState> {
     constructor(props: any) {
         super(props);
         this.state = {
+            modalMessage: '',
             rootStateAction: 'default',
             rootStateOperatorRole: 'default',
             rootStateOwnerRole: 'default',
@@ -39,10 +41,27 @@ class RootState extends Component<IRootProps, IRootState> {
     }
 
     /**
+     * Handle ESC button click
+     */
+    public escFunction = (event: any) => {
+        if (event.keyCode === 27) {
+            // when esc is pressed
+            this.setState({ modalMessage: '' });
+        }
+    }
+
+    /**
      * @ignore
      */
-    public componentDidMount() {
-        //
+    public componentDidMount = () => {
+        document.addEventListener('keydown', this.escFunction, false);
+    }
+
+    /**
+     * @ignore
+     */
+    public componentWillUnmount = () => {
+        document.removeEventListener('keydown', this.escFunction, false);
     }
 
     /**
@@ -74,9 +93,17 @@ class RootState extends Component<IRootProps, IRootState> {
             new BigNumber(rootStateOwnerRole),
             { from: userAccount },
         ).then(() => {
-            alert('Success!');
+            this.setState({ modalMessage: 'Success!' });
         });
 
+        event.preventDefault();
+    }
+
+    /**
+     * Hnadle click
+     */
+    public handleClick = (event: any) => {
+        this.setState({ modalMessage: '' });
         event.preventDefault();
     }
 
@@ -86,48 +113,74 @@ class RootState extends Component<IRootProps, IRootState> {
     public render() {
         const { listActions, rolesList } = this.props;
         const {
+            modalMessage,
             rootStateAction,
             rootStateOperatorRole,
             rootStateOwnerRole,
         } = this.state;
+        let modal;
+        if (modalMessage.length > 0) {
+            modal = (
+                <div className="modal is-active">
+                    <div className="modal-background" />
+                    <div className="modal-content">
+                        <div className="box">
+                            <article className="media">
+                                <div className="media-content">
+                                    <div className="content">
+                                        <p>
+                                            {modalMessage}
+                                        </p>
+                                    </div>
+                                </div>
+                            </article>
+                            <button className="modal-close is-large" onClick={this.handleClick} aria-label="close" />
+                        </div>
+                    </div>
+                </div>
+            );
+        }
         return (
-            <form name={DOMNames.rootStateForm} onSubmit={this.handleSubmit}>
-                <legend>Add root state</legend>
-                <div className="select">
-                    <select
-                        name={DOMNames.rootStateAction}
-                        value={rootStateAction}
-                        onChange={this.handleChange}
-                    >
-                        <option value="default" disabled={true}>Action</option>
-                        {listActions.map((a) => <option key={a.index} value={a.index}>{a.description}</option>)}
-                    </select>
-                </div>
-                <br />
-                <div className="select">
-                    <select
-                        name={DOMNames.rootStateOperatorRole}
-                        value={rootStateOperatorRole}
-                        onChange={this.handleChange}
-                    >
-                        <option value="default" disabled={true}>Operator Role</option>
-                        {rolesList.map((r) => <option key={r.index} value={r.index}>{r.description}</option>)}
-                    </select>
-                </div>
-                <br />
-                <div className="select">
-                    <select
-                        name={DOMNames.rootStateOwnerRole}
-                        value={rootStateOwnerRole}
-                        onChange={this.handleChange}
-                    >
-                        <option value="default" disabled={true}>Owner Role</option>
-                        {rolesList.map((r) => <option key={r.index} value={r.index}>{r.description}</option>)}
-                    </select>
-                </div>
-                <br />
-                <input className="button is-primary" type="submit" />
-            </form>
+            <div>
+                <form name={DOMNames.rootStateForm} onSubmit={this.handleSubmit}>
+                    <legend>Add root state</legend>
+                    <div className="select">
+                        <select
+                            name={DOMNames.rootStateAction}
+                            value={rootStateAction}
+                            onChange={this.handleChange}
+                        >
+                            <option value="default" disabled={true}>Action</option>
+                            {listActions.map((a) => <option key={a.index} value={a.index}>{a.description}</option>)}
+                        </select>
+                    </div>
+                    <br />
+                    <div className="select">
+                        <select
+                            name={DOMNames.rootStateOperatorRole}
+                            value={rootStateOperatorRole}
+                            onChange={this.handleChange}
+                        >
+                            <option value="default" disabled={true}>Operator Role</option>
+                            {rolesList.map((r) => <option key={r.index} value={r.index}>{r.description}</option>)}
+                        </select>
+                    </div>
+                    <br />
+                    <div className="select">
+                        <select
+                            name={DOMNames.rootStateOwnerRole}
+                            value={rootStateOwnerRole}
+                            onChange={this.handleChange}
+                        >
+                            <option value="default" disabled={true}>Owner Role</option>
+                            {rolesList.map((r) => <option key={r.index} value={r.index}>{r.description}</option>)}
+                        </select>
+                    </div>
+                    <br />
+                    <input className="button is-primary" type="submit" />
+                </form>
+                {modal}
+            </div>
         );
     }
 }
