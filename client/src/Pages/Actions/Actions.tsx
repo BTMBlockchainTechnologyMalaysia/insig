@@ -2,26 +2,13 @@ import BigNumber from 'bignumber.js';
 import React, { Component } from 'react';
 
 import { createLogger, format, transports } from 'winston';
-import BlockchainGeneric from '../Common/BlockchainGeneric';
-import { IBlockchainState, ISupplyChain } from '../Common/CommonInterfaces';
-import '../main.scss';
-import './action.scss';
+import BlockchainGeneric from '../../Common/BlockchainGeneric';
+import { IBlockchainState, ISupplyChain } from '../../Common/CommonInterfaces';
+import '../../main.scss';
+import './actions.scss';
 
-import Navbar from '../Components/Navbar/Navbar';
+import Navbar from '../../Components/Navbar/Navbar';
 
-/**
- * Setting up a logger.
- */
-const logger = createLogger({
-    format: format.combine(
-        format.timestamp(),
-        format.json(),
-    ),
-    level: 'debug',
-    transports: [
-        new transports.Console(),
-    ],
-});
 /**
  * Define class interface
  */
@@ -52,7 +39,6 @@ class Action extends Component<{}, IActionState> {
      * @ignore
      */
     public componentDidMount() {
-        logger.info('[START] componentDidMount');
         BlockchainGeneric.onLoad().then((generic) => {
             BlockchainGeneric.loadSupplyChain(generic.web3).then((contracts) => {
                 this.setState({
@@ -63,7 +49,6 @@ class Action extends Component<{}, IActionState> {
                 this.loadActions().then((actionsName) => this.setState({listActions: actionsName}));
             });
         });
-        logger.info('[END] componentDidMount');
     }
 
     public handleChange = (event: any) => {
@@ -84,18 +69,24 @@ class Action extends Component<{}, IActionState> {
         return (
             <div>
                 <Navbar />
+                <aside />
                 <main>
-                    <form onSubmit={this.handleSubmit}>
-                        <input
-                            className="input"
-                            type="text"
-                            name="action"
-                            value={action}
-                            onChange={this.handleChange}
-                            placeholder="Action message"
-                        />
-                        <input className="button is-primary" type="submit" />
-                    </form>
+                    <div className="tabContent">
+                        <form onSubmit={this.handleSubmit}>
+                            Add action
+                            <br />
+                            <input
+                                className="input"
+                                type="text"
+                                name="action"
+                                value={action}
+                                onChange={this.handleChange}
+                                placeholder="Action message"
+                            />
+                            <br />
+                            <input className="button is-primary" type="submit" />
+                        </form>
+                    </div>
                     <ol className="is-lower-roman">
                         {listActions.map((e) => <li key={e}>{e}</li>)}
                     </ol>
