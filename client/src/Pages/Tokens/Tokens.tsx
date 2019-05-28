@@ -110,7 +110,9 @@ class Tokens extends Component<{}, ITokensState> {
                     />
                 </div>
                 <div className="tabContent" hidden={currentTab !== DOMNames.viewForm}>
-                    <View />
+                    <View
+                        tokens={tokens}
+                    />
                 </div>
                 <div className="tabContent" hidden={currentTab !== DOMNames.burnForm}>
                     <Burn
