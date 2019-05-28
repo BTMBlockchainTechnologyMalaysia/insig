@@ -82,11 +82,12 @@ class Mint extends Component<IMintProps, IMintState> {
             inputTokenId,
             inputFaceValue,
         } = this.state;
-        const { tokens } = this.props;
+        const { tokens, userAccount } = this.props;
         tokens.mint(
             inputTo,
             new BigNumber(inputTokenId),
             new BigNumber(inputFaceValue),
+            { from: userAccount },
         ).then(() => {
             this.setState({ modalMessage: 'Success!' });
         });
