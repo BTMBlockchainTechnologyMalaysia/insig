@@ -98,13 +98,16 @@ class Tokens extends Component<{}, ITokensState> {
         const {
             currentTab,
             userAccount,
-            web3,
+            tokens,
         } = this.state;
 
         return (
             <div>
                 <div className="tabContent" hidden={currentTab !== DOMNames.mintForm}>
-                    <Mint />
+                    <Mint
+                        tokens={tokens}
+                        userAccount={userAccount}
+                    />
                 </div>
                 <div className="tabContent" hidden={currentTab !== DOMNames.viewForm}>
                     <View />
