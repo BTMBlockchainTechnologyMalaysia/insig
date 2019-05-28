@@ -119,7 +119,10 @@ class Tokens extends Component<{}, ITokensState> {
                     />
                 </div>
                 <div className="tabContent" hidden={currentTab !== DOMNames.payForm}>
-                    <Pay />
+                    <Pay
+                        tokens={tokens}
+                        userAccount={userAccount}
+                    />
                 </div>
             </div>
         );
