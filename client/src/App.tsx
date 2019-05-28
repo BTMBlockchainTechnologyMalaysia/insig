@@ -6,6 +6,7 @@ import Assets from './Pages/Assets/Assets';
 import Auth from './Pages/Auth/Auth';
 import Roles from './Pages/Roles/Roles';
 import State from './Pages/States/States';
+import Tokens from './Pages/Tokens/Tokens';
 
 class App extends Component {
     public render() {
@@ -19,6 +20,7 @@ class App extends Component {
                         <Route path="/actions/" component={Action} />
                         <Route path="/states/" component={State} />
                         <Route path="/roles/" component={Roles} />
+                        <Route path="/tokens/" component={Tokens} />
                     </div>
                 </Router>
             </div>
