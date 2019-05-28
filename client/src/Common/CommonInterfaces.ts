@@ -93,3 +93,11 @@ export interface ISupplyChain extends ITruffleContract {
     addBearer: (account: string, role: BigNumber, options: object) => Promise<void>;
     removeBearer: (account: string, role: BigNumber, options: object) => Promise<void>;
 }
+//
+export interface ITokens extends ITruffleContract {
+    exists: (tokenId: BigNumber) => Promise<boolean>;
+    mint: (to: string, tokenId: BigNumber, faceValue: BigNumber) => Promise<boolean>;
+    burn: (tokenId: string) => Promise<boolean>;
+    pay: (tokenId: BigNumber, amount: BigNumber) => Promise<void>;
+    withdraw: (tokenId: BigNumber) => Promise<void>;
+}
