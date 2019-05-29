@@ -12,6 +12,7 @@ enum DOMNames {
 interface IViewState {
     inputTokenId: string;
     faceValue: string;
+    revenues: string;
 }
 // component properties
 interface IViewProps {
@@ -26,6 +27,7 @@ class View extends Component<IViewProps, IViewState> {
         this.state = {
             faceValue: '',
             inputTokenId: '',
+            revenues: '',
         };
     }
 
@@ -49,7 +51,9 @@ class View extends Component<IViewProps, IViewState> {
         ).then((exist) => {
             if (exist) {
                 tokens.faceValue(new BigNumber(inputTokenId)).then((faceValue) => {
-                    this.setState({ faceValue: faceValue.toString() });
+                    tokens.revenues(new BigNumber(inputTokenId)).then((revenue) => {
+                        this.setState({ faceValue: faceValue.toString(), revenues: revenue.toString() });
+                    });
                 });
             }
         });
@@ -60,7 +64,7 @@ class View extends Component<IViewProps, IViewState> {
      * @ignore
      */
     public render() {
-        const { inputTokenId, faceValue } = this.state;
+        const { inputTokenId, faceValue, revenues } = this.state;
         let viewComp;
         if (faceValue.length > 0) {
             viewComp = (
@@ -78,6 +82,7 @@ class View extends Component<IViewProps, IViewState> {
                     <div className="card-content">
                         <div className="content">
                             <p><b>Face value</b> {faceValue}</p>
+                            <p><b>Revenues</b> {revenues}</p>
                         </div>
                     </div>
                 </div>

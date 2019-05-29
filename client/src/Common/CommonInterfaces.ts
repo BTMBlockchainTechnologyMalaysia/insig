@@ -96,6 +96,7 @@ export interface ISupplyChain extends ITruffleContract {
 //
 export interface ITokens extends ITruffleContract {
     faceValue: (tokenId: BigNumber) => Promise<BigNumber>;
+    revenues: (tokenId: BigNumber) => Promise<BigNumber>;
     exists: (tokenId: BigNumber) => Promise<boolean>;
     mint: (to: string, tokenId: BigNumber, faceValue: BigNumber, options: object) => Promise<boolean>;
     burn: (tokenId: BigNumber, options: object) => Promise<boolean>;
