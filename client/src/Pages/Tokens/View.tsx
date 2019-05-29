@@ -13,6 +13,7 @@ interface IViewState {
     inputTokenId: string;
     faceValue: string;
     revenues: string;
+    tokenExists: boolean;
 }
 // component properties
 interface IViewProps {
@@ -28,6 +29,7 @@ class View extends Component<IViewProps, IViewState> {
             faceValue: '',
             inputTokenId: '',
             revenues: '',
+            tokenExists: true,
         };
     }
 
@@ -36,7 +38,7 @@ class View extends Component<IViewProps, IViewState> {
      */
     public handleChange = (event: any) => {
         if (event.target.name === DOMNames.inputTokenId) {
-            this.setState({ inputTokenId: event.target.value, faceValue: '' });
+            this.setState({ inputTokenId: event.target.value, faceValue: '', tokenExists: true });
         }
     }
 
@@ -55,6 +57,8 @@ class View extends Component<IViewProps, IViewState> {
                         this.setState({ faceValue: faceValue.toString(), revenues: revenue.toString() });
                     });
                 });
+            } else {
+                this.setState({ tokenExists: false });
             }
         });
         event.preventDefault();
@@ -64,9 +68,19 @@ class View extends Component<IViewProps, IViewState> {
      * @ignore
      */
     public render() {
-        const { inputTokenId, faceValue, revenues } = this.state;
+        const { inputTokenId, faceValue, revenues, tokenExists } = this.state;
         let viewComp;
-        if (faceValue.length > 0) {
+        if (!tokenExists) {
+            viewComp = (
+                <div className="card">
+                    <header className="card-header">
+                        <p className="card-header-title">
+                        Token doesn't exist
+                        </p>
+                    </header>
+                </div>
+            );
+        } else if (faceValue.length > 0) {
             viewComp = (
                 <div className="card">
                     <header className="card-header">
