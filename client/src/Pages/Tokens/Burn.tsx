@@ -71,6 +71,8 @@ class Burn extends Component<IBurnProps, IBurnState> {
         const { tokens, userAccount } = this.props;
         tokens.burn(new BigNumber(inputTokenId), { from: userAccount }).then(() => {
             this.setState({ modalMessage: 'Success!' });
+        }).catch(() => {
+            this.setState({ modalMessage: 'An error occurred!' });
         });
         event.preventDefault();
     }

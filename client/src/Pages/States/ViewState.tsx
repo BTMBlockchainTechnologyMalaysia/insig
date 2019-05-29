@@ -89,7 +89,7 @@ class ViewState extends Component<IInfoProps, IViewState> {
         return (
             <div>
                 <form onSubmit={this.handleSubmit}>
-                    <legend>View state</legend>
+                    <legend>View State</legend>
                     <input
                         className="input"
                         type="text"

@@ -91,19 +91,19 @@ class State extends Component<{}, IState> {
                     </p>
                     <ul className="menu-list">
                         <li data-id={DOMNames.rootStateForm} onClick={this.handleChangeTab}>
-                            <a>Add root state</a>
+                            <a>Create Asset</a>
                         </li>
                         <li data-id={DOMNames.infoStateForm} onClick={this.handleChangeTab}>
-                            <a>Add state</a>
+                            <a>Add State</a>
                         </li>
                         <li data-id={DOMNames.handoverStateForm} onClick={this.handleChangeTab}>
-                            <a>Handover state</a>
+                            <a>Handover Asset</a>
                         </li>
                         <li data-id={DOMNames.parteOfStateForm} onClick={this.handleChangeTab}>
-                            <a>Part Of state</a>
+                            <a>Compose Asset</a>
                         </li>
                         <li data-id={DOMNames.viewStateForm} onClick={this.handleChangeTab}>
-                            <a>View state</a>
+                            <a>View State</a>
                         </li>
                     </ul>
                 </aside>

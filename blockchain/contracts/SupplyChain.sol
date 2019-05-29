@@ -11,8 +11,8 @@ import "./RBAC.sol";
 contract SupplyChain is RBAC {
 
     uint256 constant public NO_ACTION = 0;
-    uint256 constant public NO_ITEM = 0;
-    uint256 constant public NO_PARTOF = NO_ITEM;
+    uint256 constant public NO_ASSET = 0;
+    uint256 constant public NO_PARTOF = NO_ASSET;
     uint256 constant public NO_STEP = 0;
 
     event ActionCreated(uint256 action);
@@ -190,7 +190,7 @@ contract SupplyChain is RBAC {
     {
         uint256 asset = _asset;
         State memory state = states[lastStates[asset]];
-        while (state.partOf != NO_ITEM) {
+        while (state.partOf != NO_ASSET) {
             asset = state.partOf;
             state = states[lastStates[asset]];
         }

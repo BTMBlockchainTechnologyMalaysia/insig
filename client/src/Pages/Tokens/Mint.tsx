@@ -90,6 +90,8 @@ class Mint extends Component<IMintProps, IMintState> {
             { from: userAccount },
         ).then(() => {
             this.setState({ modalMessage: 'Success!' });
+        }).catch(() => {
+            this.setState({ modalMessage: 'An error occurred!' });
         });
         event.preventDefault();
     }

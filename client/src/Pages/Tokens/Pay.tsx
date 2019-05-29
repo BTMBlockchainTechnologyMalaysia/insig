@@ -83,6 +83,8 @@ class Pay extends Component<IPayProps, IPayState> {
             { from: userAccount},
         ).then(() => {
             this.setState({ modalMessage: 'Success!' });
+        }).catch(() => {
+            this.setState({ modalMessage: 'An error occurred!' });
         });
         event.preventDefault();
     }
