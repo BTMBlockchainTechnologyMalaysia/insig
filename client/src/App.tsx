@@ -16,11 +16,11 @@ class App extends Component {
                     <div>
                         <Route path="/" exact={true} component={Action} />
                         <Route path="/auth/" component={Auth} />
-                        <Route path="/assets/" component={Assets} />
-                        <Route path="/actions/" component={Action} />
-                        <Route path="/states/" component={State} />
-                        <Route path="/roles/" component={Roles} />
-                        <Route path="/tokens/" component={Tokens} />
+                        <Route path="/assets/:assetid?" component={Assets} />
+                        <Route path="/actions/:actionid?" component={Action} />
+                        <Route path="/states/:stateid?" component={State} />
+                        <Route path="/roles/:roleid?" component={Roles} />
+                        <Route path="/tokens/:tokenid?" component={Tokens} />
                     </div>
                 </Router>
             </div>
