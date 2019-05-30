@@ -70,7 +70,8 @@ class LastState extends Component<ILastStateProps, ILastStateState> {
         const { assetToRead, asset } = this.state;
         let assetComp;
         if (asset !== undefined) {
-            assetComp = <p>Last state is: {asset}</p>;
+            const URL = `/states/${asset}`;
+            assetComp = <p>Last state is: <a href={URL} >{asset}</a></p>;
         }
         return (
             <div>

@@ -17,7 +17,7 @@ class App extends Component {
                         <Route path="/" exact={true} component={Action} />
                         <Route path="/auth/" component={Auth} />
                         <Route path="/assets/:assetid?" component={Assets} />
-                        <Route path="/actions/:actionid?" component={Action} />
+                        <Route path="/actions/" component={Action} />
                         <Route path="/states/:stateid?" component={State} />
                         <Route path="/roles/:roleid?" component={Roles} />
                         <Route path="/tokens/:tokenid?" component={Tokens} />

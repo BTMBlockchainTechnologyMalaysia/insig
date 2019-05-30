@@ -75,6 +75,10 @@ class ViewState extends Component<IInfoProps, IViewState> {
         } = this.state;
         let stateComp;
         if (state !== undefined) {
+            const URLAsset = '/assets/' + state.asset.toNumber();
+            const URLOperatorRole = '/roles/' + state.operatorRole.toNumber();
+            const URLOwnerRole = '/roles/' + state.ownerRole.toNumber();
+            const URLPartOf = '/states/' + state.partOf.toNumber();
             stateComp = (
                 <div className="card">
                     <header className="card-header">
@@ -89,12 +93,12 @@ class ViewState extends Component<IInfoProps, IViewState> {
                     </header>
                     <div className="card-content">
                         <div className="content">
-                            <p><b>Action</b> {state.action.toNumber()}</p>
-                            <p><b>Asset</b> {state.asset.toNumber()}</p>
+                            <p><b>Action</b> <a href="/actions">{state.action.toNumber()}</a></p>
+                            <p><b>Asset</b> <a href={URLAsset}>{state.asset.toNumber()}</a></p>
                             <p><b>Creator</b> {state.creator}</p>
-                            <p><b>Operator Role</b> {state.operatorRole.toNumber()}</p>
-                            <p><b>Owner Role</b> {state.ownerRole.toNumber()}</p>
-                            <p><b>Part Of</b> {state.partOf.toNumber()}</p>
+                            <p><b>Operator Role</b> <a href={URLOperatorRole}>{state.operatorRole.toNumber()}</a></p>
+                            <p><b>Owner Role</b> <a href={URLOwnerRole}>{state.ownerRole.toNumber()}</a></p>
+                            <p><b>Part Of</b> <a href={URLPartOf}>{state.partOf.toNumber()}</a></p>
                         </div>
                     </div>
                 </div>
