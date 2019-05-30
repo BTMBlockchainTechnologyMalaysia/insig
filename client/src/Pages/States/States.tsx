@@ -224,8 +224,9 @@ class State extends Component<{ match: { params: { stateid: string } }}, IState>
                     }
                 });
             }
+            // render labels
             for (let x = 0; x < highestStateNumber; x += 1) {
-                nodes.push({ name: '' + (x + 1) });
+                nodes.push({ name: (x + 1) + ' (' + (await supplyChain.states(new BigNumber(x + 1))).asset + ')' });
             }
             this.setState({ links, nodes });
         });
