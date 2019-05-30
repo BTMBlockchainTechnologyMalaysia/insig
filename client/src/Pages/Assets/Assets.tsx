@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import '../../main.scss';
 
 import BlockchainGeneric from '../../Common/BlockchainGeneric';
-import Navbar from '../../Components/Navbar/Navbar';
 import { IBlockchainState, ISupplyChain } from '../../Common/CommonInterfaces';
+import Navbar from '../../Components/Navbar/Navbar';
 import LastState from './LastState';
 
 // dom controller names
@@ -18,7 +18,7 @@ interface IAssetsState extends IBlockchainState {
 /**
  * Assets class
  */
-class Assets extends Component<{}, IAssetsState> {
+class Assets extends Component<{ match: { params: { assetid: string } }}, IAssetsState> {
     /**
      * @ignore
      */
@@ -36,6 +36,12 @@ class Assets extends Component<{}, IAssetsState> {
      * @ignore
      */
     public componentDidMount() {
+        const { match: { params } } = this.props;
+        if (params.assetid !== undefined) {
+            this.setState({
+                currentTab: DOMNames.lastStateForm,
+            });
+        }
         BlockchainGeneric.onLoad().then((generic) => {
             BlockchainGeneric.loadSupplyChain(generic.web3).then((contracts) => {
                 this.setState({
@@ -87,11 +93,13 @@ class Assets extends Component<{}, IAssetsState> {
             currentTab,
             supplyChain,
         } = this.state;
+        const { match: { params } } = this.props;
 
         return (
             <div>
                 <div className="tabContent" hidden={currentTab !== DOMNames.lastStateForm}>
                     <LastState
+                        assetid={params.assetid}
                         supplyChain={supplyChain}
                     />
                 </div>
