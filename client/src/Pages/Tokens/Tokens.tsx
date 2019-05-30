@@ -21,7 +21,7 @@ interface ITokensState extends IBlockchainState {
     currentTab: string;
     tokens: ITokens;
 }
-class Tokens extends Component<{}, ITokensState> {
+class Tokens extends Component<{ match: { params: { tokenid: string } }}, ITokensState> {
     /**
      * @ignore
      */
@@ -39,6 +39,12 @@ class Tokens extends Component<{}, ITokensState> {
      * @ignore
      */
     public componentDidMount() {
+        const { match: { params } } = this.props;
+        if (params.tokenid !== undefined) {
+            this.setState({
+                currentTab: DOMNames.viewForm,
+            });
+        }
         BlockchainGeneric.onLoad().then((generic) => {
             BlockchainGeneric.loadTokens(generic.web3).then((contracts) => {
                 this.setState({
@@ -100,6 +106,7 @@ class Tokens extends Component<{}, ITokensState> {
             userAccount,
             tokens,
         } = this.state;
+        const { match: { params } } = this.props;
 
         return (
             <div>
@@ -111,6 +118,7 @@ class Tokens extends Component<{}, ITokensState> {
                 </div>
                 <div className="tabContent" hidden={currentTab !== DOMNames.viewForm}>
                     <View
+                        tokenid={params.tokenid}
                         tokens={tokens}
                     />
                 </div>

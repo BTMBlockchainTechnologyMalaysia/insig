@@ -18,6 +18,7 @@ interface IViewState {
 // component properties
 interface IViewProps {
     tokens: ITokens;
+    tokenid: string;
 }
 class View extends Component<IViewProps, IViewState> {
     /**
@@ -31,6 +32,17 @@ class View extends Component<IViewProps, IViewState> {
             revenues: '',
             tokenExists: true,
         };
+    }
+
+    /**
+     * @ignore
+     */
+    public componentWillReceiveProps = (nextProps: IViewProps, nextState: IViewState) => {
+        const { tokens, tokenid } = nextProps;
+        if (tokens !== undefined && tokenid !== undefined) {
+            this.setState({ inputTokenId: tokenid });
+            this.submitTokenView(tokens, tokenid);
+        }
     }
 
     /**
@@ -48,19 +60,7 @@ class View extends Component<IViewProps, IViewState> {
     public handleSubmit = (event: any) => {
         const { tokens } = this.props;
         const { inputTokenId } = this.state;
-        tokens.exists(
-            new BigNumber(inputTokenId),
-        ).then((exist) => {
-            if (exist) {
-                tokens.faceValue(new BigNumber(inputTokenId)).then((faceValue) => {
-                    tokens.revenues(new BigNumber(inputTokenId)).then((revenue) => {
-                        this.setState({ faceValue: faceValue.toString(), revenues: revenue.toString() });
-                    });
-                });
-            } else {
-                this.setState({ tokenExists: false });
-            }
-        });
+        this.submitTokenView(tokens, inputTokenId);
         event.preventDefault();
     }
 
@@ -120,6 +120,22 @@ class View extends Component<IViewProps, IViewState> {
                 {viewComp}
             </div>
         );
+    }
+
+    private submitTokenView = (tokens: ITokens, inputTokenId: string) => {
+        tokens.exists(
+            new BigNumber(inputTokenId),
+        ).then((exist) => {
+            if (exist) {
+                tokens.faceValue(new BigNumber(inputTokenId)).then((faceValue) => {
+                    tokens.revenues(new BigNumber(inputTokenId)).then((revenue) => {
+                        this.setState({ faceValue: faceValue.toString(), revenues: revenue.toString() });
+                    });
+                });
+            } else {
+                this.setState({ tokenExists: false });
+            }
+        });
     }
 }
 
