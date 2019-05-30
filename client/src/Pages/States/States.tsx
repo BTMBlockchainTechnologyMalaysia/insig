@@ -36,7 +36,7 @@ interface IState extends IBlockchainState {
     nodes: any[];
     links: any[];
 }
-class State extends Component<{}, IState> {
+class State extends Component<{ match: { params: { stateid: string } }}, IState> {
     constructor(props: any) {
         super(props);
         this.state = {
@@ -56,6 +56,12 @@ class State extends Component<{}, IState> {
      * @ignore
      */
     public componentDidMount() {
+        const { match: { params } } = this.props;
+        if (params.stateid !== undefined) {
+            this.setState({
+                currentTab: DOMNames.viewStateForm,
+            });
+        }
         BlockchainGeneric.onLoad().then((generic) => {
             BlockchainGeneric.loadSupplyChain(generic.web3).then((contracts) => {
                 this.setState({
@@ -126,6 +132,7 @@ class State extends Component<{}, IState> {
             userAccount,
             web3,
         } = this.state;
+        const { match: { params } } = this.props;
 
         return (
             <div>
@@ -162,6 +169,7 @@ class State extends Component<{}, IState> {
                 </div>
                 <div className="tabContent" hidden={currentTab !== DOMNames.viewStateForm}>
                     <ViewState
+                        stateid={params.stateid}
                         userAccount={userAccount}
                         supplyChain={supplyChain}
                     />

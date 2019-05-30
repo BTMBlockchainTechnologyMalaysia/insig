@@ -15,6 +15,7 @@ interface IViewState {
 }
 // Component props
 interface IInfoProps {
+    stateid: string;
     userAccount: string;
     supplyChain: ISupplyChain;
 }
@@ -28,6 +29,19 @@ class ViewState extends Component<IInfoProps, IViewState> {
             state: undefined as any,
             stateToRead: '',
         };
+    }
+
+    /**
+     * @ignore
+     */
+    public componentWillReceiveProps = (nextProps: IInfoProps, nextState: IViewState) => {
+        const { supplyChain, stateid } = nextProps;
+        if (supplyChain !== undefined && stateid !== undefined) {
+            this.setState({ stateToRead: stateid });
+            supplyChain.states(new BigNumber(stateid)).then((stateInfo) => {
+                this.setState({ state: stateInfo });
+            });
+        }
     }
 
     /**
