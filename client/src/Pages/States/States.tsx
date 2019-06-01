@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 import React, { Component } from 'react';
 import { Hint, Sankey } from 'react-vis';
-import Energy from './energy.json';
+import axios from 'axios';
 
 import BlockchainGeneric from '../../Common/BlockchainGeneric';
 import { IBlockchainState, ISupplyChain } from '../../Common/CommonInterfaces';
@@ -16,6 +16,7 @@ import ParteOf from './ParteOfState';
 import RootState from './RootState';
 import ViewState from './ViewState';
 
+axios.defaults.baseURL = 'http://localhost:3001';
 // graphic variables
 const BLURRED_LINK_OPACITY = 0.3;
 const FOCUSED_LINK_OPACITY = 1;
@@ -36,7 +37,7 @@ interface IState extends IBlockchainState {
     nodes: any[];
     links: any[];
 }
-class State extends Component<{ match: { params: { stateid: string } }}, IState> {
+class State extends Component<{ match: { params: { stateid: string } } }, IState> {
     constructor(props: any) {
         super(props);
         this.state = {
@@ -180,56 +181,19 @@ class State extends Component<{ match: { params: { stateid: string } }}, IState>
     }
 
     /**
-     * Navigate through the precendentsm until root
-     */
-    private generateGraphic = async (lastState: BigNumber) => {
-        const { supplyChain } = this.state;
-        const links: [{ source: number, target: number, value: number }] = [] as any;
-        const nodes: [{ name: string }] = [{ name: lastState.toString() }];
-        const precedents = await supplyChain.getPrecedents(lastState);
-        // tslint:disable-next-line prefer-for-of
-        for (let p = 0; p < precedents.length; p += 1) {
-            links.push({ source: precedents[p].toNumber() - 1, target: lastState.toNumber() - 1, value: 1 });
-            const deep = await this.generateGraphic(precedents[p]);
-            deep.links.forEach((d) => links.push(d));
-            deep.nodes.forEach((d) => nodes.push(d));
-        }
-        return { links, nodes };
-    }
-
-    /**
      * Load data to render graphic
      */
     private loadGraphicData = () => {
-        const { supplyChain } = this.state;
-        // get the total assets
-        supplyChain.totalAssets().then(async (tAssets) => {
-            const links: [{ source: number, target: number, value: number }] = [] as any;
-            const nodes: [{ name: string }] = [] as any;
-            let highestStateNumber = 0;
-            // and then navigate through the precedents of each one
-            for (let i = 1; i <= tAssets.toNumber(); i += 1) {
-                const lastStateN = await supplyChain.lastStates(new BigNumber(i));
-                if (lastStateN.toNumber() > highestStateNumber) {
-                    highestStateNumber = lastStateN.toNumber();
-                }
-                const generated = await this.generateGraphic(lastStateN);
-                // and add new values to arrays
-                generated.links.forEach((e) => {
-                    if (
-                        links.find((l) => l.source === e.source && l.target === e.target && l.value === e.value)
-                        === undefined
-                    ) {
-                        links.push(e);
-                    }
-                });
-            }
-            // render labels
-            for (let x = 0; x < highestStateNumber; x += 1) {
-                nodes.push({ name: (x + 1) + ' (' + (await supplyChain.states(new BigNumber(x + 1))).asset + ')' });
-            }
-            this.setState({ links, nodes });
-        });
+        axios.get('/cache/graph/')
+            .then((response) => {
+                // handle success
+                this.setState({ links: response.data.links, nodes: response.data.nodes });
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+                alert('An error occured!');
+            });
     }
 
     private drawGraph() {
