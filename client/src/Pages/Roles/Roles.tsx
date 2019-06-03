@@ -83,10 +83,10 @@ class Roles extends Component<{ match: { params: { roleid: string } }}, IRolesSt
                     </p>
                     <ul className="menu-list">
                         <li data-id={DOMNames.newRootRoleForm} onClick={this.handleChangeTab}>
-                            <a>Add root role</a>
+                            <a>Add Root Role</a>
                         </li>
                         <li data-id={DOMNames.newRoleForm} onClick={this.handleChangeTab}>
-                            <a>Add role</a>
+                            <a>Add Role</a>
                         </li>
                         <li data-id={DOMNames.addBearerForm} onClick={this.handleChangeTab}>
                             <a>Add Bearer</a>
@@ -95,10 +95,10 @@ class Roles extends Component<{ match: { params: { roleid: string } }}, IRolesSt
                             <a>Remove Bearer</a>
                         </li>
                         <li data-id={DOMNames.listRolesForm} onClick={this.handleChangeTab}>
-                            <a>List roles</a>
+                            <a>List Roles</a>
                         </li>
                         <li data-id={DOMNames.viewRoleForm} onClick={this.handleChangeTab}>
-                            <a>View role</a>
+                            <a>View Role</a>
                         </li>
                     </ul>
                 </aside>

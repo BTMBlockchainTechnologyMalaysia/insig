@@ -24,7 +24,7 @@ class ListRoles extends Component<ILIstRolesProps, {}> {
         const { rolesList } = this.props;
         return (
             <div>
-                Existing roles
+                Existing Roles
                 <br />
                 <ol type="1">
                     {rolesList.map((r) => <li key={r.index}>{r.description}</li>)}

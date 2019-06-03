@@ -50,12 +50,12 @@ class NewRootRole extends Component<INewRootRoleProps, INewRootRoleState> {
         const { rootRoleTile } = this.state;
         return (
             <form name={DOMNames.newRootRoleForm} onSubmit={this.handleSubmit}>
-                Add root role
+                Add Root Role
                 <br />
                 <input
                     className="input"
                     type="text"
-                    placeholder="Root role tile"
+                    placeholder="Root Role Title"
                     name={DOMNames.newRootRoleTile}
                     value={rootRoleTile}
                     onChange={this.handleChange}

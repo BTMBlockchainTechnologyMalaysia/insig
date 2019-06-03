@@ -12,7 +12,7 @@ import Navbar from '../../Components/Navbar/Navbar';
 
 import HandoverState from './HandoverState';
 import InfoState from './InfoState';
-import ParteOf from './ParteOfState';
+import PartOf from './PartOfState';
 import RootState from './RootState';
 import ViewState from './ViewState';
 
@@ -24,7 +24,7 @@ enum DOMNames {
     rootStateForm = 'rootStateForm',
     infoStateForm = 'infoStateForm',
     handoverStateForm = 'handoverStateForm',
-    parteOfStateForm = 'parteOfStateForm',
+    partOfStateForm = 'partOfStateForm',
     viewStateForm = 'viewStateForm',
 }
 interface IState extends IBlockchainState {
@@ -105,7 +105,7 @@ class State extends Component<{ match: { params: { stateid: string } }}, IState>
                         <li data-id={DOMNames.handoverStateForm} onClick={this.handleChangeTab}>
                             <a>Handover Asset</a>
                         </li>
-                        <li data-id={DOMNames.parteOfStateForm} onClick={this.handleChangeTab}>
+                        <li data-id={DOMNames.partOfStateForm} onClick={this.handleChangeTab}>
                             <a>Compose Asset</a>
                         </li>
                         <li data-id={DOMNames.viewStateForm} onClick={this.handleChangeTab}>
@@ -160,8 +160,8 @@ class State extends Component<{ match: { params: { stateid: string } }}, IState>
                         rolesList={rolesList}
                     />
                 </div>
-                <div className="tabContent" hidden={currentTab !== DOMNames.parteOfStateForm}>
-                    <ParteOf
+                <div className="tabContent" hidden={currentTab !== DOMNames.partOfStateForm}>
+                    <PartOf
                         userAccount={userAccount}
                         supplyChain={supplyChain}
                         listActions={listActions}

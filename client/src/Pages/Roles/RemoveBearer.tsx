@@ -54,7 +54,7 @@ class RemoveBearer extends Component<IRemoveBearerProps, IRemoveBearerState> {
                 <input
                     className="input"
                     type="text"
-                    placeholder="Bearer name"
+                    placeholder="Bearer Name"
                     name={DOMNames.removeBearerAddress}
                     value={removeBearerAddress}
                     onChange={this.handleChange}
