@@ -143,7 +143,7 @@ class RootState extends Component<IRootProps, IRootState> {
         return (
             <div>
                 <form name={DOMNames.rootStateForm} onSubmit={this.handleSubmit}>
-                    <legend>Add root state</legend>
+                    <legend>Create Asset</legend>
                     <div className="select">
                         <select
                             name={DOMNames.rootStateAction}

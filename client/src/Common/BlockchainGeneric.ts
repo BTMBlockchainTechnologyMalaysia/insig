@@ -4,10 +4,11 @@ import getWeb3 from '../utils/getWeb3';
 import {
     IBlockchainState,
     ISupplyChain,
+    ITokens,
 } from './CommonInterfaces';
 
-import RBACJSON from '../contracts/RBAC.json';
 import SupplyChainJSON from '../contracts/SupplyChain.json';
+import TokensJSON from '../contracts/Token.json';
 
 /**
  * Blockchain generic is a class used to serve with some static methods
@@ -38,6 +39,19 @@ class BlockchainGeneric {
             (ContractSupplyChain as any).setProvider((web3 as any).currentProvider);
             const instanceSupplyChain = await ContractSupplyChain.deployed();
             resolve({ supplyChain: instanceSupplyChain });
+        });
+    }
+
+    /**
+     * load supply chain contracts
+     */
+    public static loadTokens(web3: any): Promise<{ tokens: ITokens }> {
+        return new Promise(async (resolve, reject) => {
+            // load contract
+            const ContractTokens = truffleContract(TokensJSON) as ITokens;
+            (ContractTokens as any).setProvider((web3 as any).currentProvider);
+            const instanceTokens = await ContractTokens.deployed();
+            resolve({ tokens: instanceTokens });
         });
     }
 }

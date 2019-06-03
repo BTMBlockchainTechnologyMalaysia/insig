@@ -98,7 +98,7 @@ class InfoState extends Component<IInfoProps, IInfoState> {
         } = this.state;
         return (
             <form name={DOMNames.infoStateForm} onSubmit={this.handleSubmit}>
-                <legend>Add state</legend>
+                <legend>Add State</legend>
                 <div className="select">
                     <select
                         name={DOMNames.infoStateAction}

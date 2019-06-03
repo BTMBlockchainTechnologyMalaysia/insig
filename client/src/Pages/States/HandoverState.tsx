@@ -98,7 +98,7 @@ class HandoverState extends Component<IHandoverProps, IHandoverState> {
         } = this.state;
         return (
             <form name={DOMNames.handoverStateForm} onSubmit={this.handleSubmit}>
-                <legend>Handover state</legend>
+                <legend>Handover Asset</legend>
                 <div className="select">
                     <select
                         name={DOMNames.handoverStateAction}

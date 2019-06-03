@@ -35,13 +35,13 @@ interface IRolesState extends IBlockchainState {
 /**
  * Roles class
  */
-class Roles extends Component<{}, IRolesState> {
+class Roles extends Component<{ match: { params: { roleid: string } }}, IRolesState> {
     constructor(props: any) {
         super(props);
         this.state = {
             currentTab: '',
-            supplyChain: undefined as any,
             rolesList: [],
+            supplyChain: undefined as any,
             userAccount: '',
             web3: undefined as any,
         };
@@ -51,6 +51,12 @@ class Roles extends Component<{}, IRolesState> {
      * @ignore
      */
     public componentDidMount() {
+        const { match: { params } } = this.props;
+        if (params.roleid !== undefined) {
+            this.setState({
+                currentTab: DOMNames.viewRoleForm,
+            });
+        }
         BlockchainGeneric.onLoad().then((generic) => {
             BlockchainGeneric.loadSupplyChain(generic.web3).then(async (contracts) => {
                 this.setState({
@@ -77,10 +83,10 @@ class Roles extends Component<{}, IRolesState> {
                     </p>
                     <ul className="menu-list">
                         <li data-id={DOMNames.newRootRoleForm} onClick={this.handleChangeTab}>
-                            <a>Add root role</a>
+                            <a>Add Root Role</a>
                         </li>
                         <li data-id={DOMNames.newRoleForm} onClick={this.handleChangeTab}>
-                            <a>Add role</a>
+                            <a>Add Role</a>
                         </li>
                         <li data-id={DOMNames.addBearerForm} onClick={this.handleChangeTab}>
                             <a>Add Bearer</a>
@@ -89,10 +95,10 @@ class Roles extends Component<{}, IRolesState> {
                             <a>Remove Bearer</a>
                         </li>
                         <li data-id={DOMNames.listRolesForm} onClick={this.handleChangeTab}>
-                            <a>List roles</a>
+                            <a>List Roles</a>
                         </li>
                         <li data-id={DOMNames.viewRoleForm} onClick={this.handleChangeTab}>
-                            <a>View role</a>
+                            <a>View Role</a>
                         </li>
                     </ul>
                 </aside>
@@ -110,6 +116,8 @@ class Roles extends Component<{}, IRolesState> {
             userAccount,
             supplyChain,
         } = this.state;
+        const { match: { params } } = this.props;
+
         return (<div>
             <div className="tabContent" hidden={currentTab !== DOMNames.newRootRoleForm}>
                 <NewRootRole
@@ -138,6 +146,7 @@ class Roles extends Component<{}, IRolesState> {
             </div>
             <div className="tabContent" hidden={currentTab !== DOMNames.viewRoleForm}>
                 <ViewRole
+                    roleid={params.roleid}
                     userAccount={userAccount}
                     supplyChain={supplyChain}
                 />

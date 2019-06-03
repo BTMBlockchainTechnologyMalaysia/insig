@@ -12,7 +12,7 @@ import Navbar from '../../Components/Navbar/Navbar';
 
 import HandoverState from './HandoverState';
 import InfoState from './InfoState';
-import ParteOf from './ParteOfState';
+import PartOf from './PartOfState';
 import RootState from './RootState';
 import ViewState from './ViewState';
 
@@ -24,7 +24,7 @@ enum DOMNames {
     rootStateForm = 'rootStateForm',
     infoStateForm = 'infoStateForm',
     handoverStateForm = 'handoverStateForm',
-    parteOfStateForm = 'parteOfStateForm',
+    partOfStateForm = 'partOfStateForm',
     viewStateForm = 'viewStateForm',
 }
 interface IState extends IBlockchainState {
@@ -36,7 +36,7 @@ interface IState extends IBlockchainState {
     nodes: any[];
     links: any[];
 }
-class State extends Component<{}, IState> {
+class State extends Component<{ match: { params: { stateid: string } }}, IState> {
     constructor(props: any) {
         super(props);
         this.state = {
@@ -56,6 +56,12 @@ class State extends Component<{}, IState> {
      * @ignore
      */
     public componentDidMount() {
+        const { match: { params } } = this.props;
+        if (params.stateid !== undefined) {
+            this.setState({
+                currentTab: DOMNames.viewStateForm,
+            });
+        }
         BlockchainGeneric.onLoad().then((generic) => {
             BlockchainGeneric.loadSupplyChain(generic.web3).then((contracts) => {
                 this.setState({
@@ -91,19 +97,19 @@ class State extends Component<{}, IState> {
                     </p>
                     <ul className="menu-list">
                         <li data-id={DOMNames.rootStateForm} onClick={this.handleChangeTab}>
-                            <a>Add root state</a>
+                            <a>Create Asset</a>
                         </li>
                         <li data-id={DOMNames.infoStateForm} onClick={this.handleChangeTab}>
-                            <a>Add state</a>
+                            <a>Add State</a>
                         </li>
                         <li data-id={DOMNames.handoverStateForm} onClick={this.handleChangeTab}>
-                            <a>Handover state</a>
+                            <a>Handover Asset</a>
                         </li>
-                        <li data-id={DOMNames.parteOfStateForm} onClick={this.handleChangeTab}>
-                            <a>Part Of state</a>
+                        <li data-id={DOMNames.partOfStateForm} onClick={this.handleChangeTab}>
+                            <a>Compose Asset</a>
                         </li>
                         <li data-id={DOMNames.viewStateForm} onClick={this.handleChangeTab}>
-                            <a>View state</a>
+                            <a>View State</a>
                         </li>
                     </ul>
                 </aside>
@@ -126,6 +132,7 @@ class State extends Component<{}, IState> {
             userAccount,
             web3,
         } = this.state;
+        const { match: { params } } = this.props;
 
         return (
             <div>
@@ -153,8 +160,8 @@ class State extends Component<{}, IState> {
                         rolesList={rolesList}
                     />
                 </div>
-                <div className="tabContent" hidden={currentTab !== DOMNames.parteOfStateForm}>
-                    <ParteOf
+                <div className="tabContent" hidden={currentTab !== DOMNames.partOfStateForm}>
+                    <PartOf
                         userAccount={userAccount}
                         supplyChain={supplyChain}
                         listActions={listActions}
@@ -162,6 +169,7 @@ class State extends Component<{}, IState> {
                 </div>
                 <div className="tabContent" hidden={currentTab !== DOMNames.viewStateForm}>
                     <ViewState
+                        stateid={params.stateid}
                         userAccount={userAccount}
                         supplyChain={supplyChain}
                     />
@@ -216,8 +224,9 @@ class State extends Component<{}, IState> {
                     }
                 });
             }
+            // render labels
             for (let x = 0; x < highestStateNumber; x += 1) {
-                nodes.push({ name: '' + (x + 1) });
+                nodes.push({ name: (x + 1) + ' (' + (await supplyChain.states(new BigNumber(x + 1))).asset + ')' });
             }
             this.setState({ links, nodes });
         });

@@ -50,6 +50,7 @@ class Navbar extends Component<{}, INavbarState> {
                         <a className="navbar-item" href="/assets">Assets</a>
                         <a className="navbar-item" href="/states">States</a>
                         <a className="navbar-item" href="/roles">Roles</a>
+                        <a className="navbar-item" href="/tokens">Tokens</a>
                     </div>
                     {/* add welcome or login on right side */}
                     <div className="navbar-end">

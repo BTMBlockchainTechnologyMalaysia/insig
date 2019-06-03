@@ -60,7 +60,7 @@ class AddBearer extends Component<IAddBearerProps, IAddBearerState> {
                 <input
                     className="input"
                     type="text"
-                    placeholder="Bearer name"
+                    placeholder="Bearer Name"
                     name={DOMNames.addBearerAddress}
                     value={addBearerAddress}
                     onChange={this.handleChange}

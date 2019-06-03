@@ -55,12 +55,12 @@ class NewRole extends Component<INewRoleProps, INewRoleState> {
         const { roleTitle, roleAdmin } = this.state;
         return (
             <form name={DOMNames.newRoleForm} onSubmit={this.handleSubmit}>
-                Add role
+                Add Role
                 <br />
                 <input
                     className="input"
                     type="text"
-                    placeholder="Role name"
+                    placeholder="Role Name"
                     name={DOMNames.newRoleTitle}
                     value={roleTitle}
                     onChange={this.handleChange}
@@ -69,7 +69,7 @@ class NewRole extends Component<INewRoleProps, INewRoleState> {
                 <input
                     className="input"
                     type="text"
-                    placeholder="Admin role"
+                    placeholder="Admin Role"
                     name={DOMNames.newRoleAdmin}
                     value={roleAdmin}
                     onChange={this.handleChange}

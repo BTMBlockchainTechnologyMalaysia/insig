@@ -14,6 +14,7 @@ interface ILastStateState {
 }
 // Component props
 interface ILastStateProps {
+    assetid: string;
     supplyChain: ISupplyChain;
 }
 class LastState extends Component<ILastStateProps, ILastStateState> {
@@ -26,6 +27,19 @@ class LastState extends Component<ILastStateProps, ILastStateState> {
             asset: undefined as any,
             assetToRead: '',
         };
+    }
+
+    /**
+     * @ignore
+     */
+    public componentWillReceiveProps = (nextProps: ILastStateProps, nextState: ILastStateState) => {
+        const { supplyChain, assetid } = nextProps;
+        if (supplyChain !== undefined && assetid !== undefined) {
+            this.setState({ assetToRead: assetid });
+            supplyChain.lastStates(new BigNumber(assetid)).then((stateInfo) => {
+                this.setState({ asset: stateInfo.toNumber() });
+            });
+        }
     }
 
     /**
@@ -56,7 +70,8 @@ class LastState extends Component<ILastStateProps, ILastStateState> {
         const { assetToRead, asset } = this.state;
         let assetComp;
         if (asset !== undefined) {
-            assetComp = <p>Last state is: {asset}</p>;
+            const URL = `/states/${asset}`;
+            assetComp = <p>Last state is: <a href={URL} >{asset}</a></p>;
         }
         return (
             <div>
