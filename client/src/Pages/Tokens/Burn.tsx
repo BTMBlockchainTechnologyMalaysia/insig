@@ -71,8 +71,9 @@ class Burn extends Component<IBurnProps, IBurnState> {
         const { tokens, userAccount } = this.props;
         tokens.burn(new BigNumber(inputTokenId), { from: userAccount }).then(() => {
             this.setState({ modalMessage: 'Success!' });
-        }).catch(() => {
-            this.setState({ modalMessage: 'An error occurred!' });
+        }).catch((error: any) => {
+            const errorMessage = error.toString().match(/VM Exception while processing transaction: revert ([\w .']+)/);
+            this.setState({ modalMessage: errorMessage[1] });
         });
         event.preventDefault();
     }
