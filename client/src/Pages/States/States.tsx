@@ -1,7 +1,7 @@
+import axios from 'axios';
 import BigNumber from 'bignumber.js';
 import React, { Component } from 'react';
 import { Hint, Sankey } from 'react-vis';
-import axios from 'axios';
 
 import BlockchainGeneric from '../../Common/BlockchainGeneric';
 import { IBlockchainState, ISupplyChain } from '../../Common/CommonInterfaces';
@@ -189,7 +189,7 @@ class State extends Component<{ match: { params: { stateid: string } } }, IState
                 // handle success
                 this.setState({ links: response.data.links, nodes: response.data.nodes });
             })
-            .catch(function (error) {
+            .catch((error: any) => {
                 // handle error
                 console.log(error);
                 alert('An error occured!');

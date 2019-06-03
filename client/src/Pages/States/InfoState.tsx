@@ -1,3 +1,4 @@
+import axios from 'axios';
 import BigNumber from 'bignumber.js';
 import React, { Component } from 'react';
 import { ISupplyChain } from '../../Common/CommonInterfaces';
@@ -82,6 +83,9 @@ class InfoState extends Component<IInfoProps, IInfoState> {
             { from: userAccount },
         ).then(() => {
             alert('Success!');
+            axios.post('/cache/asset/reset/', {
+                assetId: infoStateAsset,
+            });
         });
         event.preventDefault();
     }

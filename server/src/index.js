@@ -4,6 +4,7 @@ import truffleContract from 'truffle-contract';
 import BigNumber from 'bignumber.js';
 import redis from 'redis';
 import util from 'util';
+import bodyParser from 'body-parser';
 
 // read contract truffle artifact
 import SupplyChainJSON from './contracts/SupplyChain.json';
@@ -21,6 +22,10 @@ const redisClient = redis.createClient();
 let supplyChain;
 // promisify
 redisClient.get = util.promisify(redisClient.get);
+redisClient.send_command = util.promisify(redisClient.send_command);
+// support /post
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 
 // allow CORS
@@ -56,6 +61,12 @@ async function generateGraphic(lastState) {
 }
 
 
+app.post('/cache/asset/reset/', async (req, res) => {
+    const { assetId } = req.body;
+    await redisClient.send_command('DEL', [`ls-${assetId}`]);
+    res.sendStatus(200);
+});
+
 app.get('/cache/graph/', (req, res) => {
     supplyChain.totalAssets().then(async (tAssets) => {
         const links = [];
@@ -64,12 +75,17 @@ app.get('/cache/graph/', (req, res) => {
         // and then navigate through the precedents of each one
         for (let i = 1; i <= tAssets.toNumber(); i += 1) {
             // eslint-disable-next-line no-await-in-loop
-            const lastStateN = await supplyChain.lastStates(new BigNumber(i));
-            if (lastStateN.toNumber() > highestStateNumber) {
-                highestStateNumber = lastStateN.toNumber();
+            let lastStateN = await redisClient.get(`ls-${i}`);
+            if (lastStateN === null) {
+                // eslint-disable-next-line no-await-in-loop
+                lastStateN = (await supplyChain.lastStates(new BigNumber(i))).toString();
+                redisClient.set(`ls-${i}`, lastStateN);
+            }
+            if (parseInt(lastStateN, 10) > highestStateNumber) {
+                highestStateNumber = lastStateN;
             }
             // eslint-disable-next-line no-await-in-loop
-            const generated = await generateGraphic(lastStateN);
+            const generated = await generateGraphic(new BigNumber(lastStateN));
             // and add new values to arrays
             generated.links.forEach((e) => {
                 if (
