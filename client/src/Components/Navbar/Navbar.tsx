@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Connect } from 'uport-connect';
+import getUport from '../../utils/getUport';
 
 import '../../main.scss';
 import insigLogo from './insigv1trans.png';
@@ -19,13 +19,8 @@ class Navbar extends Component<{}, INavbarState> {
     constructor(props: any) {
         super(props);
         // Connect to uport
-        const uport = new Connect('Soup', {
-            bannerImage: { '/': '/ipfs/QmSu1BvnPGy5gEEe2eHunyNN6vb2Zd4pvaqABbvVHUKP3T' },
-            description: 'Some potatos are better than others.',
-            network: 'ropsten',
-        });
         this.state = {
-            uport,
+            uport: getUport(),
         };
     }
 
