@@ -85,3 +85,6 @@ typings/
 
 # generated documentation
 docs/
+
+# secret menmonic
+.secret
