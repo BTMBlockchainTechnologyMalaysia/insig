@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { UPortButton } from 'rimble-ui';
-import { Connect } from 'uport-connect';
+import getUport from '../../utils/getUport';
 
 import '../../main.scss';
 import './auth.scss';
@@ -9,19 +9,11 @@ import insigLogo from './insigv1trans.png';
 import Navbar from '../../Components/Navbar/Navbar';
 
 /**
- * Connect to uport
- */
-const uport = new Connect('Soup', {
-    bannerImage: { '/': '/ipfs/QmSu1BvnPGy5gEEe2eHunyNN6vb2Zd4pvaqABbvVHUKP3T' },
-    description: 'Some potatos are better than others.',
-    network: 'ropsten',
-});
-
-/**
  * Define class interface
  */
 interface IAuthState {
     logged: boolean;
+    uport: any;
 }
 /**
  * Action class
@@ -34,6 +26,7 @@ class Auth extends Component<{}, IAuthState> {
         super(props);
         this.state = {
             logged: undefined as any,
+            uport: getUport(),
         };
     }
 
@@ -41,15 +34,18 @@ class Auth extends Component<{}, IAuthState> {
      * @ignore
      */
     public componentDidMount() {
+        const { uport } = this.state;
         uport.loadState();
         this.setState({ logged: (uport.state.name !== undefined) });
     }
 
     public handleLogout = () => {
+        const { uport } = this.state;
         uport.logout();
     }
 
     public handleLogin = () => {
+        const { uport } = this.state;
         // Request credentials to login
         const req = {
             notifications: true,

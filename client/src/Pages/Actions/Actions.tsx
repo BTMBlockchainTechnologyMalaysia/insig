@@ -8,6 +8,7 @@ import '../../main.scss';
 import './actions.scss';
 
 import Navbar from '../../Components/Navbar/Navbar';
+import getUport from '../../utils/getUport';
 
 /**
  * Define class interface
@@ -16,6 +17,7 @@ interface IActionState extends IBlockchainState {
     action: string;
     listActions: string [];
     supplyChain: ISupplyChain;
+    uport: any;
 }
 /**
  * Action class
@@ -30,6 +32,7 @@ class Action extends Component<{}, IActionState> {
             action: '',
             listActions: [],
             supplyChain: undefined as any,
+            uport: getUport(),
             userAccount: undefined as any,
             web3: undefined as any,
         };
