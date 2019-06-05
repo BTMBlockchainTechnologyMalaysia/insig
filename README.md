@@ -16,7 +16,7 @@ To know more, please, read the [wiki](https://github.com/HQ20/insig/wiki).
 
 ## Installation
 
-This repository holds the smart contracts (blockchain) and the client (client) for insiġ. They are considered two different packages and controlled using [lerna](https://github.com/lerna/lerna). First you have to install the dependencies. To do so, in each folder run
+This repository holds the smart contracts (blockchain), a server (to control some cache related to blackchain data) and the client (client) for insiġ. They are considered two different packages and controlled using [lerna](https://github.com/lerna/lerna). First you have to install the dependencies. To do so, in each folder run
 
 ```bash
 npm install	
@@ -36,6 +36,8 @@ npm run coverage
 In regards to make this run, the best options is by using [ganache](https://truffleframework.com/ganache). It allows you to save and load environments. So, create a new environment for insiġ and configure it to use the port *8545*.
 
 Then, from *blockchain* folder run `npx truffle console --network development` and in this new environment, run only `migrate`. This should deploy the contracts to your ganache networks.
+
+If success, go to *server* folder, run a redis server, run `npm run link-contracts` and then `npm run start`. To now more about how to run a redis server, read the [server README](server/README.md).
 
 If success, go to *client* folder, run `npm run link-contracts` and then `npm run start`.
 
