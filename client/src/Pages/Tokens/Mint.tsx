@@ -90,8 +90,9 @@ class Mint extends Component<IMintProps, IMintState> {
             { from: userAccount },
         ).then(() => {
             this.setState({ modalMessage: 'Success!' });
-        }).catch(() => {
-            this.setState({ modalMessage: 'An error occurred!' });
+        }).catch((error: any) => {
+            const errorMessage = error.toString().match(/VM Exception while processing transaction: revert ([\w .']+)/);
+            this.setState({ modalMessage: errorMessage[1] });
         });
         event.preventDefault();
     }
